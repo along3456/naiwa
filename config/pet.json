@@ -1,0 +1,255 @@
+{
+  "id": "pet_6af405aa70a481918608d183e5971487",
+  "rows": 14,
+  "idle": [
+    {
+      "rowIndex": 11,
+      "columnIndex": 3,
+      "frameDurationMs": 240
+    },
+    {
+      "rowIndex": 11,
+      "columnIndex": 2,
+      "frameDurationMs": 180
+    },
+    {
+      "rowIndex": 11,
+      "columnIndex": 1,
+      "frameDurationMs": 230
+    },
+    {
+      "rowIndex": 11,
+      "columnIndex": 0,
+      "frameDurationMs": 500
+    },
+    {
+      "rowIndex": 11,
+      "columnIndex": 1,
+      "frameDurationMs": 110
+    },
+    {
+      "rowIndex": 11,
+      "columnIndex": 2,
+      "frameDurationMs": 110
+    },
+    {
+      "rowIndex": 11,
+      "columnIndex": 3,
+      "frameDurationMs": 110
+    },
+    {
+      "rowIndex": 11,
+      "columnIndex": 4,
+      "frameDurationMs": 120
+    },
+    {
+      "rowIndex": 11,
+      "columnIndex": 5,
+      "frameDurationMs": 120
+    },
+    {
+      "rowIndex": 11,
+      "columnIndex": 6,
+      "frameDurationMs": 120
+    },
+    {
+      "rowIndex": 11,
+      "columnIndex": 7,
+      "frameDurationMs": 580
+    },
+    {
+      "rowIndex": 11,
+      "columnIndex": 6,
+      "frameDurationMs": 120
+    },
+    {
+      "rowIndex": 11,
+      "columnIndex": 5,
+      "frameDurationMs": 120
+    },
+    {
+      "rowIndex": 11,
+      "columnIndex": 4,
+      "frameDurationMs": 120
+    },
+    {
+      "rowIndex": 11,
+      "columnIndex": 3,
+      "frameDurationMs": 120
+    },
+    {
+      "rowIndex": 11,
+      "columnIndex": 2,
+      "frameDurationMs": 120
+    },
+    {
+      "rowIndex": 11,
+      "columnIndex": 1,
+      "frameDurationMs": 120
+    },
+    {
+      "rowIndex": 11,
+      "columnIndex": 0,
+      "frameDurationMs": 480
+    },
+    {
+      "rowIndex": 11,
+      "columnIndex": 1,
+      "frameDurationMs": 120
+    },
+    {
+      "rowIndex": 11,
+      "columnIndex": 2,
+      "frameDurationMs": 120
+    },
+    {
+      "rowIndex": 11,
+      "columnIndex": 3,
+      "frameDurationMs": 120
+    },
+    {
+      "rowIndex": 11,
+      "columnIndex": 4,
+      "frameDurationMs": 120
+    },
+    {
+      "rowIndex": 11,
+      "columnIndex": 5,
+      "frameDurationMs": 120
+    },
+    {
+      "rowIndex": 11,
+      "columnIndex": 6,
+      "frameDurationMs": 120
+    },
+    {
+      "rowIndex": 11,
+      "columnIndex": 7,
+      "frameDurationMs": 560
+    },
+    {
+      "rowIndex": 12,
+      "columnIndex": 0,
+      "frameDurationMs": 120
+    },
+    {
+      "rowIndex": 12,
+      "columnIndex": 1,
+      "frameDurationMs": 160
+    },
+    {
+      "rowIndex": 12,
+      "columnIndex": 2,
+      "frameDurationMs": 160
+    },
+    {
+      "rowIndex": 12,
+      "columnIndex": 3,
+      "frameDurationMs": 110
+    },
+    {
+      "rowIndex": 12,
+      "columnIndex": 4,
+      "frameDurationMs": 100
+    },
+    {
+      "rowIndex": 12,
+      "columnIndex": 5,
+      "frameDurationMs": 130
+    },
+    {
+      "rowIndex": 12,
+      "columnIndex": 6,
+      "frameDurationMs": 160
+    },
+    {
+      "rowIndex": 12,
+      "columnIndex": 7,
+      "frameDurationMs": 4340
+    },
+    {
+      "rowIndex": 12,
+      "columnIndex": 6,
+      "frameDurationMs": 120
+    },
+    {
+      "rowIndex": 12,
+      "columnIndex": 5,
+      "frameDurationMs": 120
+    },
+    {
+      "rowIndex": 12,
+      "columnIndex": 4,
+      "frameDurationMs": 120
+    },
+    {
+      "rowIndex": 12,
+      "columnIndex": 3,
+      "frameDurationMs": 120
+    },
+    {
+      "rowIndex": 12,
+      "columnIndex": 2,
+      "frameDurationMs": 200
+    },
+    {
+      "rowIndex": 11,
+      "columnIndex": 4,
+      "frameDurationMs": 140
+    },
+    {
+      "rowIndex": 11,
+      "columnIndex": 3,
+      "frameDurationMs": 160
+    }
+  ],
+  "hover": [
+    {
+      "rowIndex": 13,
+      "columnIndex": 0,
+      "frameDurationMs": 100
+    },
+    {
+      "rowIndex": 13,
+      "columnIndex": 1,
+      "frameDurationMs": 100
+    },
+    {
+      "rowIndex": 13,
+      "columnIndex": 2,
+      "frameDurationMs": 100
+    },
+    {
+      "rowIndex": 13,
+      "columnIndex": 3,
+      "frameDurationMs": 110
+    },
+    {
+      "rowIndex": 13,
+      "columnIndex": 4,
+      "frameDurationMs": 130
+    },
+    {
+      "rowIndex": 13,
+      "columnIndex": 5,
+      "frameDurationMs": 850
+    },
+    {
+      "rowIndex": 13,
+      "columnIndex": 6,
+      "frameDurationMs": 130
+    },
+    {
+      "rowIndex": 13,
+      "columnIndex": 7,
+      "frameDurationMs": 220
+    }
+  ],
+  "hoverMs": 1740,
+  "speechMs": 3000,
+  "trigger": "click",
+  "speechTexts": [
+    "嘎嘎滴辣虾！",
+    "安迪~"
+  ]
+}

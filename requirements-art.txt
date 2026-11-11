@@ -1,0 +1,2 @@
+# Optional; ordinary builds use only Python's standard library and Node.js.
+Pillow==12.2.0
