@@ -24,13 +24,21 @@ function naiwaSay(anchor){
 }
 function naiwaClickGesture(event,run,onDrag=()=>{},onEnd=()=>{}){
   const id=event.pointerId,x=event.screenX,y=event.screenY;
-  let moved=false,finished=false,lastX=x,direction=null;
+  const turnDistance=NAIWA.dragTurnThresholdPx??4;
+  let moved=false,finished=false,extremeX=x,direction=null;
   function track(e){
     if(e.pointerId!==id||finished)return;
-    const dx=e.screenX-lastX;lastX=e.screenX;
     if(!moved&&Math.hypot(e.screenX-x,e.screenY-y)<=6)return;
     moved=true;
-    const next=dx<0?"running-left":dx>0?"running-right":direction||(e.screenX<x?"running-left":"running-right");
+    let next=direction;
+    if(direction===null){next=e.screenX<x?"running-left":"running-right";extremeX=e.screenX;}
+    else if(direction==="running-right"){
+      extremeX=Math.max(extremeX,e.screenX);
+      if(extremeX-e.screenX>=turnDistance){next="running-left";extremeX=e.screenX;}
+    }else{
+      extremeX=Math.min(extremeX,e.screenX);
+      if(e.screenX-extremeX>=turnDistance){next="running-right";extremeX=e.screenX;}
+    }
     if(next!==direction){direction=next;onDrag(next);}
   }
   function clean(){finished=true;window.removeEventListener("pointermove",track,true);window.removeEventListener("pointerup",release,true);window.removeEventListener("pointercancel",cancel,true);}

@@ -21,11 +21,13 @@ render();frame(11,3);click();frame(13,0);assert.strictEqual(bubbles[0].textConte
 advance(500);click();frame(13,0);assert.strictEqual(bubbles[0].textContent,'安迪~');
 advance(1800);assert.ok(slots[0],'restart must replace the previous completion deadline');
 pointer('down');pointer('move',80);render();frame(2,0);assert.strictEqual(bubbles.length,0);assert.strictEqual(slots[0],false);
-pointer('move',83);render();frame(1,0); // Reversal while still left of the press origin.
+for(const x of [81,80,82,83]){pointer('move',x);render();frame(2,0);} // Ignore sub-threshold jitter.
+pointer('move',84);render();frame(1,0); // Accumulated reversal, still left of press origin.
 advance(1900);const beforeVertical=element.style.backgroundPosition;
-pointer('move',83,110);render();assert.strictEqual(element.style.backgroundPosition,beforeVertical,'vertical movement must not restart or reverse running');
-pointer('move',81,110);render();frame(2,0);
-pointer('up',81,110);render();assert.strictEqual(rendered['data-codex-pet-state'],'idle');
-click();assert.strictEqual(bubbles[0].textContent,'嘎嘎滴辣虾！');pointer('down');pointer('move',120);render();frame(1,0);pointer('move',117);render();frame(2,0);pointer('up',117);render();
+pointer('move',84,110);render();assert.strictEqual(element.style.backgroundPosition,beforeVertical,'vertical movement must not restart or reverse running');
+pointer('move',82,110);render();assert.strictEqual(rendered['data-codex-pet-state'],'running-right');
+pointer('move',80,110);render();frame(2,0);
+pointer('up',80,110);render();assert.strictEqual(rendered['data-codex-pet-state'],'idle');
+click();assert.strictEqual(bubbles[0].textContent,'嘎嘎滴辣虾！');pointer('down');pointer('move',120);render();frame(1,0);pointer('move',117);render();frame(1,0);pointer('move',116);render();frame(2,0);pointer('up',116);render();
 advance(5000);assert.strictEqual(rendered['data-codex-pet-state'],'idle');assert.strictEqual(bubbles.length,0);
-console.log('PASS: click restarts timing and alternates speech; left/right drag interrupts and does not resume costume.');
+console.log('PASS: directional hysteresis and accumulated reversal; click restarts timing and alternates speech; left/right drag interrupts and does not resume costume.');

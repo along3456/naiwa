@@ -251,5 +251,6 @@
   "speechTexts": [
     "嘎嘎滴辣虾！",
     "安迪~"
-  ]
+  ],
+  "dragTurnThresholdPx": 4
 }
