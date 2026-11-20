@@ -1,10 +1,18 @@
 # 奶蛙 Naiwa
 
-奶蛙的素材、动画时间轴、专属播放器补丁与本地预览项目。当前版本支持：
+奶蛙的素材、动画时间轴和专属播放器补丁。
+
+## 动画预览
+
+| 常态动画 | 单击换装与气泡 |
+| :---: | :---: |
+| ![奶蛙捧腹大笑，接着摆出战斗姿态](docs/idle-preview.gif) | ![奶蛙换装开扇，依次显示「嘎嘎滴辣虾！」和「安迪~」](docs/click-preview.gif) |
+
+## 动作与交互
 
 - 常态约 **11.16 秒**一轮：捧腹前后倾斜两次，接战斗姿态并停留，再收势循环。外观沿用确认过的生成素材，节奏接近参考视频，不是逐帧复刻。
 - **单击**换装开扇一次，约 **1.74 秒**后恢复常态。悬停不触发；播放中再次单击会从头播放并切换下一句气泡，拖动立即中断换装进入跑步，松开后恢复常态。
-- 有效单击交替说 **「嘎嘎滴辣虾！」→「安迪~」→「嘎嘎滴辣虾！」……**，每个气泡约 3 秒。重新启动应用后从第一句开始。
+- 有效单击交替说 **「嘎嘎滴辣虾！」→「安迪~」→「嘎嘎滴辣虾！」……**。气泡随换装一起出现，恢复常态时一起消失。重新启动应用后从第一句开始。
 - 保留左右跑步与对话视线，去掉独立跳跃和思考循环。
 
 ## 快速开始
@@ -16,25 +24,19 @@ cd /home/lhl/naiwa
 python3 scripts/build.py --verify-release
 ```
 
-产物在 `dist/`。直接用浏览器打开 `dist/index.html`，或运行：
-
-```bash
-python3 -m http.server 8765 --bind 127.0.0.1 --directory dist
-```
-
-访问 <http://127.0.0.1:8765>。单击预览里的奶蛙，动画和交替气泡即可播放。预览不修改桌面应用。
+构建产物位于 `dist/`。
 
 ## 可复现范围
 
-图像生成本身不是确定性的。本项目冻结了已确认的图集、图层、原始生成条带和参考素材；构建不再次调用图片生成。相同源码、配置和图集可生成与迁移基线 **SHA256 完全一致**的 `player.js`。
+图像生成本身不是确定性的。本项目冻结了已确认的图集、图层、原始生成条带和参考素材；构建不再次调用图片生成。相同源码、配置和图集可生成与发布基线 **SHA256 完全一致**的 `player.js`。
 
-`--verify-release` 检查当前产物与 `config/release.json` 记录的迁移版本逐字节一致。正常修改源码或素材后，请用 `python3 scripts/build.py` 构建，不再要求与旧基线相同。构建输出包含输入文件的哈希清单，且不嵌入机器路径或构建时间。
+`--verify-release` 检查当前产物与 `config/release.json` 记录的发布基线逐字节一致。正常修改源码或素材后，请用 `python3 scripts/build.py` 构建。构建输出包含输入文件的哈希清单，且不嵌入机器路径或构建时间。
 
 `vendor/original-player.js` 是本机应用对应版本的原始 JS 资源，用于替换其中的宠物播放组件。普通构建不需要读取系统应用、旧聊天目录或 `/tmp`。整个项目移动到其他目录后仍可构建。
 
 ## 安装和恢复
 
-安装目标为 Linux 桌面应用 **26.1103.60933**，路径由 `config/runtime.json` 指定。补丁只针对已有奶蛙 ID，不创建新宠物，不修改其他宠物，也不会同步到其他设备。
+安装目标为 Linux 桌面应用 **26.1111.21308**，路径由 `config/runtime.json` 指定。补丁只针对已有奶蛙 ID，换装、气泡和拖动逻辑由本机播放器提供。
 
 先构建，再完全退出 Codex/ChatGPT 桌面应用，在系统终端执行：
 
@@ -43,7 +45,7 @@ cd /home/lhl/naiwa
 sudo python3 scripts/install.py install
 ```
 
-重新打开应用生效。已安装此前聊天中任一受支持版本的补丁，也可以用这个命令升级。安装脚本保留原版备份，并检查应用版本和资源校验值。需要管理员权限，预留约 1.6 GB 可用空间。
+重新打开应用生效。安装脚本按应用版本保留原版备份，并检查应用版本和播放器资源校验值。需要管理员权限，预留约 1.6 GB 可用空间。
 
 恢复原版时，完全退出应用后执行：
 
@@ -52,18 +54,17 @@ cd /home/lhl/naiwa
 sudo python3 scripts/install.py restore
 ```
 
-原始备份位于 `/usr/lib/chatgpt/resources/app.asar.naiwa-original`。应用升级后，旧补丁可能不再兼容；安装器会拒绝未知版本，不能仅修改版本号绕过校验。若自己修改并安装了新版补丁，继续迭代时需把上次安装产物的 `patched_chunk_sha256` 加入 `config/runtime.json` 的 `previous_patch_sha256`，以允许从已知旧版升级。
+当前版的原始备份位于 `/usr/lib/chatgpt/resources/app.asar.naiwa-original.26.1111.21308`。应用升级后需核对新版播放器并重新构建和安装补丁。若在同一个应用版本上迭代已安装的补丁，请先把上次安装产物的 `patched_chunk_sha256` 加入 `config/runtime.json` 的 `previous_patch_sha256`，以允许从已知补丁升级。
 
-本次迁移不执行安装，不重启应用，也不修改当前桌面宠物。
 
 ## 项目结构
 
 ```text
 src/component.js             奶蛙专属播放器、点击判定、气泡交替逻辑
 src/preview.html             本地预览模板
-config/pet.json              宠物 ID、帧时间轴、两句气泡、显示时长
+config/pet.json              宠物 ID、帧时间轴、两句气泡
 config/runtime.json          应用版本、资源路径、允许升级的旧补丁哈希
-config/release.json          迁移基线的图集与播放器 SHA256
+config/release.json          发布基线的图集与播放器 SHA256
 assets/atlas.png             构建使用的已确认 14 行图集
 artwork/original-atlas.png   保留原跑步、视线等画面的 11 行图层
 artwork/transition-rows.png  大笑、战斗过渡、开扇的 3 行图层
@@ -82,12 +83,12 @@ dist/                      构建输出，已被 Git 忽略
 
 ## 修改方式
 
-- 修改气泡：编辑 `config/pet.json` 的 `speechTexts`；`speechMs` 控制显示时长。
-- 修改动作节奏：编辑同一文件的 `idle` 和 `hover` 帧列表；`hover` 是沿用的内部名称，现在由单击触发。修改开扇列表时同步其总时长 `hoverMs`。
+- 修改气泡文字：编辑 `config/pet.json` 的 `speechTexts`。
+- 修改动作节奏：编辑同一文件的 `idle` 和 `hover` 帧列表。`hover` 是单击触发的开扇动作，帧时长之和也决定气泡显示时长。
 - 修改触发和交互：编辑 `src/component.js`。
 - 修改素材：更新 `assets/atlas.png`。每格 192×208，8 列、14 行；前 11 行保留原画面，第 12–14 行依次为大笑过渡、战斗过渡、开扇。它是本机播放器专用图集，不能直接作为标准 11 行 Pets 图集上传。
 
-所有修改都运行 `python3 scripts/build.py`，再预览、按需安装。
+修改后运行 `python3 scripts/build.py`，再按需安装。
 
 ## 可选的图集重建
 

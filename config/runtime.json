@@ -1,15 +1,9 @@
 {
-  "app_version": "26.1103.60933",
-  "original_chunk_sha256": "446c85a998b76df08ac34abc8a9ffb9f1ade9c871cc8cea13718f51b32d9c1a1",
+  "app_version": "26.1111.21308",
+  "original_chunk_sha256": "74d2c1274ea874fbf1590a9c8f09213cafe772a4fb6738f65f0100ed54f4579f",
   "previous_patch_sha256": [
-    "bf9739a38a145672a5faf57b9d004537f847eb39d9f11336fda7d6a087bfb7ef",
-    "32b8e14c1c7377ea6d6404bce94f920497001fce42331d5a4939197b65b68e53",
-    "d744e145d200838d8508e149071bdf0e128435b74ccdd350a21758f805097995",
-    "ffa5fc7b1df5597c6be12a289b27502169230cd8837e28ac5852871aa54b0926",
-    "72f0c0ef9c9acfac69ed51f89e02489ceac5cfcf37bb34d7f2e408bf83744800",
-    "47dec7b1710b9ca27a1f4abc36c4861cc0c4e276172ace7bf031dcf5af57b6aa",
-    "db25c7047c8ee56db08bfa05ae329687e36c03cecc4f92281e98422d3b2c4f41"
+    "1b9cf2a4b9decd4ae2e48fadf41a5feee5ce5b3370c57e3ea525e8a547bd9052"
   ],
-  "chunk": "webview/assets/async/182735.5b42af8792.js",
+  "chunk": "webview/assets/async/907538.ce3dfb2b2a.js",
   "application": "/usr/lib/chatgpt/resources/app.asar"
 }

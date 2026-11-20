@@ -11,7 +11,7 @@ def write(path, text): path.write_text(text, encoding='utf-8', newline='\n')
 def main():
     parser=argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--output', type=Path, default=ROOT/'dist')
-    parser.add_argument('--verify-release', action='store_true', help='Check byte-for-byte equality with the migrated release')
+    parser.add_argument('--verify-release', action='store_true', help='Check byte-for-byte equality with the release baseline')
     args=parser.parse_args()
     out=args.output.resolve()
     if out == ROOT or ROOT in out.parents and out.parts[len(ROOT.parts)] in {'src','assets','config','vendor','artwork','scripts','tests'}:
@@ -27,10 +27,16 @@ def main():
     atlas=(ROOT/'assets/atlas.png').read_bytes()
     original=original_bytes.decode('utf-8')
     module=original.index('FPUb(e,t,n)')
-    start=original.index('let y=({assetMap:',module)
-    end=original.index('function E(',start)
+    start=original.index('let v=({assetMap:',module)
+    end=original.index('function y(',start)
+    exports=original[module:start]
+    if exports.count('bH:()=>v')!=1:
+        raise SystemExit('桌面宠物组件导出不匹配，停止构建。')
     full=dict(config,url='data:image/png;base64,'+base64.b64encode(atlas).decode('ascii'))
-    patched=original[:start]+'const NAIWA='+json.dumps(full,ensure_ascii=False,separators=(',',':'))+';'+component+original[end:]
+    bindings='const naiwaFramePosition=E,naiwaFrameAt=f;'
+    patched=(original[:module]+exports.replace('bH:()=>v','bH:()=>naiwaPlayer',1)
+             +bindings+'const NAIWA='+json.dumps(full,ensure_ascii=False,separators=(',',':'))
+             +';'+component+original[end:])
     # Preserve a selected Naiwa's identity while its cloud artwork is unavailable.
     fallback=dict(id=config['id'],name='奶蛙',description='本机奶蛙',spriteVersionNumber=2,
                   spritesheetUrl='data:image/png;base64,'+base64.b64encode((ROOT/'artwork/original-atlas.png').read_bytes()).decode('ascii'))
@@ -42,31 +48,32 @@ def main():
     if args.verify_release:
         release=read_json(ROOT/'config/release.json')
         if player_sha!=release['player_sha256'] or atlas_sha!=release['atlas_sha256']:
-            raise SystemExit('源码或素材已改变，不能与迁移基线逐字节复现。正常开发构建请省略 --verify-release。')
+            raise SystemExit('源码或素材已改变，不能与发布基线逐字节复现。正常开发构建请省略 --verify-release。')
     out.mkdir(parents=True,exist_ok=True)
     write(out/'player.js',patched)
     subprocess.run([node,'--check',str(out/'player.js')],check=True)
     (out/'atlas.png').write_bytes(atlas)
     write(out/'timeline.json',json.dumps(config,ensure_ascii=False,indent=2))
     write(out/'player-readable.js','/* Artwork URL omitted; player.js contains the atlas. */\nconst NAIWA='+json.dumps(config,ensure_ascii=False,indent=2)+';\n'+component)
+    hover_ms=sum(frame['frameDurationMs'] for frame in config['hover'])
     manifest={
         'pet_id':config['id'],'app_version':runtime['app_version'],
         'original_chunk_sha256':runtime['original_chunk_sha256'],
         'patched_chunk_sha256':player_sha,'atlas_sha256':atlas_sha,
         'previous_patch_sha256':runtime['previous_patch_sha256'],
         'idle_ms':sum(frame['frameDurationMs'] for frame in config['idle']),
-        'hover_ms':config['hoverMs'],'trigger':config['trigger'],
-        'speech_ms':config['speechMs'],'speech_texts':config['speechTexts'],
+        'hover_ms':hover_ms,'trigger':config['trigger'],
+        'speech_ms':hover_ms,'speech_texts':config['speechTexts'],
         'installed':False,'desktop_runtime_verified':False,
     }
     write(out/'manifest.json',json.dumps(manifest,ensure_ascii=False,indent=2))
     installer=(ROOT/'scripts/installer.py').read_text(encoding='utf-8')
     installer=installer.replace("APP = Path('/usr/lib/chatgpt/resources/app.asar')",'APP = Path('+repr(runtime['application'])+')')
-    installer=installer.replace("CHUNK = 'webview/assets/async/182735.5b42af8792.js'",'CHUNK = '+repr(runtime['chunk']))
+    installer=installer.replace("CHUNK = 'webview/assets/async/907538.ce3dfb2b2a.js'",'CHUNK = '+repr(runtime['chunk']))
     write(out/'install.py',installer)
     preview=(ROOT/'src/preview.html').read_text(encoding='utf-8')
     preview=preview.replace('__NAIWA_CONFIG__',json.dumps(config,ensure_ascii=False,separators=(',',':')))
-    preview=preview.replace('__NAIWA_HELPERS__',component.split('let y=({assetMap:')[0])
+    preview=preview.replace('__NAIWA_HELPERS__',component.split('const naiwaPlayer=',1)[0])
     write(out/'index.html',preview)
     preview_script=out/'preview.js'
     write(preview_script,preview.split('<script>')[1].split('</script>')[0])
@@ -76,6 +83,6 @@ def main():
     write(out/'build-inputs.json',json.dumps({name:digest((ROOT/name).read_bytes()) for name in inputs},indent=2))
     print('构建成功：'+str(out))
     print('player SHA256: '+player_sha)
-    if args.verify_release:print('迁移基线逐字节复现通过。')
+    if args.verify_release:print('发布基线逐字节复现通过。')
 
 if __name__=='__main__':main()

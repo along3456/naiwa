@@ -245,8 +245,6 @@
       "frameDurationMs": 220
     }
   ],
-  "hoverMs": 1740,
-  "speechMs": 3000,
   "trigger": "click",
   "speechTexts": [
     "嘎嘎滴辣虾！",
